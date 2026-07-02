@@ -12,13 +12,3 @@ terraform {
 provider "github" {
   owner = "nitinguptamca-2025" # Replace with your GitHub username
 }
-
-# Create a new GitHub Repository
-resource "github_repository" "example" {
-  name        = "prectiseMMP-terraform"
-  description = "This repository is fully managed by Terraform"
-  visibility  = "public"
-
-  # Initialize with a README
-  auto_init = true
-}
