@@ -1,14 +1,39 @@
+resource "random_id" "random" {
+  byte_length = 2
+  count       = 2
+
+}
 resource "github_repository" "projects-mmp" {
-  name        = "projects-mmp"
+  count = 2
+  name  = "projects-mmp-${random_id.random[count.index].hex}"
+  # name        = "projects-mmp"
   visibility  = "private"
   description = "This repository is fully managed by Terraform"
   auto_init   = true
 }
 
 resource "github_repository_file" "readme" {
-  repository          = github_repository.projects-mmp.name
+  count               = 2
+  repository          = github_repository.projects-mmp[count.index].name
   file                = "README.md"
-  content             = "projects-mmp \n This repository is fully managed by Terraform modify by nitinguptamca-2025"
   commit_message      = "Add README.md"
   overwrite_on_create = true
+  content             = <<-EOT
+Hello
+World
+Terraform
+EOT
+}
+
+resource "github_repository_file" "index" {
+  count               = 2
+  repository          = github_repository.projects-mmp[count.index].name
+  file                = "index.html"
+  commit_message      = "Add index.html"
+  overwrite_on_create = true
+  content             = <<-EOT
+   eana
+   meena
+   dikka
+EOT
 }
