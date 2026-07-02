@@ -42,3 +42,9 @@ output "repository_names" {
   value       = [for repo in github_repository.projects-mmp : repo.name]
   description = "List of created repository names"
 }
+
+output "clone-urls" {
+  value       = { for i in github_repository.projects-mmp : i.name => i.http_clone_url }
+  description = "List of clone URLs for the created repositories"
+  sensitive   = false
+}
