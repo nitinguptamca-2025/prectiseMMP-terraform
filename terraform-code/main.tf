@@ -4,11 +4,10 @@ resource "random_id" "random" {
 
 }
 resource "github_repository" "projects-mmp" {
-  count = var.repo_count
-  name  = "projects-mmp-${random_id.random[count.index].hex}"
-  # name        = "projects-mmp"
-  visibility  = "private"
+  count       = var.repo_count
+  name        = "projects-mmp-${random_id.random[count.index].hex}"
   description = "This repository is fully managed by Terraform"
+  visibility  = var.environment == "prod" ? "private" : "public"
   auto_init   = true
 }
 
@@ -20,7 +19,7 @@ resource "github_repository_file" "readme" {
   overwrite_on_create = true
   content             = <<-EOT
 Hello
-World
+World ${var.environment} repository
 Terraform
 EOT
 }
@@ -33,7 +32,7 @@ resource "github_repository_file" "index" {
   overwrite_on_create = true
   content             = <<-EOT
    eana
-   meena
+   meena ${var.environment} repository
    dikka
 EOT
 }
