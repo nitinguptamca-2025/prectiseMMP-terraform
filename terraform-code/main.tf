@@ -4,7 +4,7 @@ resource "random_id" "random" {
 
 }
 resource "github_repository" "projects-mmp" {
-  count = 2
+  count = var.repo_count
   name  = "projects-mmp-${random_id.random[count.index].hex}"
   # name        = "projects-mmp"
   visibility  = "private"
@@ -13,7 +13,7 @@ resource "github_repository" "projects-mmp" {
 }
 
 resource "github_repository_file" "readme" {
-  count               = 2
+  count               = var.repo_count
   repository          = github_repository.projects-mmp[count.index].name
   file                = "README.md"
   commit_message      = "Add README.md"
@@ -48,3 +48,7 @@ output "clone-urls" {
   description = "List of clone URLs for the created repositories"
   sensitive   = false
 }
+# output "varsource" {
+#   value       = var.varsource
+#   description = "Source of the variable"
+# }
