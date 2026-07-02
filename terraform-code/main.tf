@@ -37,3 +37,8 @@ resource "github_repository_file" "index" {
    dikka
 EOT
 }
+
+output "repository_names" {
+  value       = [for repo in github_repository.projects-mmp : repo.name]
+  description = "List of created repository names"
+}
