@@ -8,7 +8,7 @@ resource "github_repository" "projects-mmp" {
 resource "github_repository_file" "readme" {
   repository          = github_repository.projects-mmp.name
   file                = "README.md"
-  content             = "# projects-mmp \n This repository is fully managed by Terraform modify by nitinguptamca-2025"
+  content             = "projects-mmp \n This repository is fully managed by Terraform modify by nitinguptamca-2025"
   commit_message      = "Add README.md"
   overwrite_on_create = true
 }
