@@ -8,16 +8,22 @@ resource "github_repository" "mmp" {
   name        = "mmp-${each.key}"
   description = "This ${var.repos[each.key].language} repository is fully managed by Terraform"
   visibility  = var.environment == "prod" ? "private" : "public"
-  auto_init   = true
-  dynamic "pages" {
-    for_each = lookup(each.value, "pages", "false") == "true" ? [1] : []
-    content {
-      source {
-        branch = "main"
-        path   = "/"
-      }
+  auto_init = true
+  pages {
+    source {
+      branch = "main"
+      path   = "/docs"
     }
   }
+  # dynamic "pages" {
+  #   for_each = lookup(each.value, "pages", "false") == "true" ? [1] : []
+  #   content {
+  #     source {
+  #       branch = "main"
+  #       path   = "/"
+  #     }
+  #   }
+  # }
   provisioner "local-exec" {
     command = "gh repo view ${self.name} -w"
   }
