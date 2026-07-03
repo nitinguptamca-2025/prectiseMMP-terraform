@@ -9,17 +9,25 @@ resource "github_repository" "projects-mmp" {
   description = "This repository is fully managed by Terraform"
   visibility  = var.environment == "prod" ? "private" : "public"
   auto_init   = true
-  # provisioner "local-exec" {
-  #   command = "gh repo view ${self.name} -w"
-  # }
+  dynamic "pages" {
+    for_each = lookup(each.value, "pages", "false") == "true" ? [1] : []
+    content {
+      source {
+        branch = "main"
+        path   = "/"
+      }
+    }
+    # provisioner "local-exec" {
+    #   command = "gh repo view ${self.name} -w"
+    # }
 
-  # provisioner "local-exec" {
-  #   when    = destroy
-  #   command = "rm -rf ./cloned_repos/${self.name}"
+    # provisioner "local-exec" {
+    #   when    = destroy
+    #   command = "rm -rf ./cloned_repos/${self.name}"
 
-  # }
+    # }
+  }
 }
-
 resource "terraform_data" "repo_clone" {
   for_each   = var.repos
   depends_on = [github_repository_file.readme, github_repository_file.main]
