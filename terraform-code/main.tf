@@ -4,16 +4,32 @@ resource "random_id" "random" {
 
 }
 resource "github_repository" "projects-mmp" {
-  count       = var.repo_count
-  name        = "projects-mmp-${random_id.random[count.index].hex}"
+  for_each    = var.repos
+  name        = "projects-mmp-${each.key}"
   description = "This repository is fully managed by Terraform"
   visibility  = var.environment == "prod" ? "private" : "public"
   auto_init   = true
+  # provisioner "local-exec" {
+  #   command = "gh repo view ${self.name} -w"
+  # }
+
+  # provisioner "local-exec" {
+  #   when    = destroy
+  #   command = "rm -rf ./cloned_repos/${self.name}"
+
+  # }
 }
 
+# resource "terraform_data" "repo_clone" {
+#   for_each   = var.repos
+#   depends_on = [github_repository_file.readme, github_repository_file.index]
+#   provisioner "local-exec" {
+#     command = "gh repo clone ${github_repository.projects-mmp[each.key].name} "
+#   }
+# }
 resource "github_repository_file" "readme" {
-  count               = var.repo_count
-  repository          = github_repository.projects-mmp[count.index].name
+  for_each            = var.repos
+  repository          = github_repository.projects-mmp[each.key].name
   file                = "README.md"
   commit_message      = "Add README.md"
   overwrite_on_create = true
@@ -25,8 +41,8 @@ EOT
 }
 
 resource "github_repository_file" "index" {
-  count               = 2
-  repository          = github_repository.projects-mmp[count.index].name
+  for_each            = var.repos
+  repository          = github_repository.projects-mmp[each.key].name
   file                = "index.html"
   commit_message      = "Add index.html"
   overwrite_on_create = true
