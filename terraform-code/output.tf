@@ -1,6 +1,6 @@
 output "clone-urls" {
   value = {
-    for i in github_repository.projects-mmp : i.name => {
+    for i in github_repository.mmp : i.name => {
       ssh-clone-url  = i.ssh_clone_url,
       http-clone-url = i.http_clone_url,
       pages-url      = try(i.pages[0].html_url, "no page")

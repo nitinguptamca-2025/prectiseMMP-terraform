@@ -3,10 +3,10 @@ resource "random_id" "random" {
   count       = 2
 }
 
-resource "github_repository" "projects-mmp" {
+resource "github_repository" "mmp" {
   for_each    = var.repos
-  name        = "projects-mmp-${each.key}"
-  description = "This repository is fully managed by Terraform"
+  name        = "mmp-${each.key}"
+  description = "This ${var.repos[each.key].language} repository is fully managed by Terraform"
   visibility  = var.environment == "prod" ? "private" : "public"
   auto_init   = true
   dynamic "pages" {
@@ -17,43 +17,48 @@ resource "github_repository" "projects-mmp" {
         path   = "/"
       }
     }
-    # provisioner "local-exec" {
-    #   command = "gh repo view ${self.name} -w"
-    # }
+  }
+  provisioner "local-exec" {
+    command = "gh repo view ${self.name} -w"
+  }
 
-    # provisioner "local-exec" {
-    #   when    = destroy
-    #   command = "rm -rf ./cloned_repos/${self.name}"
-
-    # }
+  provisioner "local-exec" {
+    when    = destroy
+    command = "rm -rf ${self.name}"
   }
 }
 resource "terraform_data" "repo_clone" {
   for_each   = var.repos
   depends_on = [github_repository_file.readme, github_repository_file.main]
   provisioner "local-exec" {
-    command = "gh repo clone ${github_repository.projects-mmp[each.key].name} "
+    command = "gh repo clone ${github_repository.mmp[each.key].name} "
   }
 }
 resource "github_repository_file" "readme" {
   for_each            = var.repos
-  repository          = github_repository.projects-mmp[each.key].name
+  repository          = github_repository.mmp[each.key].name
+  branch              = "main"
   file                = "README.md"
   commit_message      = "Add README.md"
   overwrite_on_create = true
-  # content             = templatefile(template/readme.tpl)
-  content = <<-EOT
-Hello
-World ${var.environment} repository
-Terraform
-EOT
+  content = templatefile("templates/readme.tftpl", {
+    env        = var.environment,
+    language   = var.repos[each.key].language,
+    repo_name  = github_repository.mmp[each.key].name,
+    authorname = data.github_user.current.name,
+  })
+  #   content = <<-EOT
+  # Hello
+  # World ${var.environment} repository
+  # Terraform ${data.github_user.current.name}
+  # EOT
 }
 
 resource "github_repository_file" "main" {
   for_each            = var.repos
-  repository          = github_repository.projects-mmp[each.key].name
+  repository          = github_repository.mmp[each.key].name
   branch              = "main"
-  file                = "index.html"
+  file                = each.value.filename
   commit_message      = "Add index.html"
   overwrite_on_create = true
   content             = <<-EOT
@@ -65,3 +70,9 @@ EOT
   #   ignore_changes = [content]
   # }
 }
+
+moved {
+  from = github_repository_file.index
+  to   = github_repository_file.main
+}
+
