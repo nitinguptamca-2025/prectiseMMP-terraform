@@ -17,7 +17,7 @@ variable "environment" {
   }
 }
 variable "repos" {
-  type = map(map(string))
+  type        = map(map(string))
   description = "Map of repository names to their respective languages and files"
 }
 variable "repo_max" {
