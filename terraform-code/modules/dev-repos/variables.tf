@@ -8,13 +8,8 @@ variable "repo_count" {
   }
 }
 variable "env" {
-  type        = list(string)
+  type        = string
   description = "deployment environment"
-  default     = ["dev"]
-  validation {
-    condition     = length(var.env) > 0
-    error_message = "At least one environment must be specified."
-  }
 }
 variable "repos" {
   type        = map(map(string))

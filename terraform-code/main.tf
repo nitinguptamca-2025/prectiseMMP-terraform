@@ -1,7 +1,4 @@
-module "repos" {
-  source     = "./modules/dev-repos"
-  repo_count = 2
-  env        = ["dev", "qa", "prod"]
+locals {
   repos = {
     "infra" = {
       language = "terraform"
@@ -14,5 +11,13 @@ module "repos" {
       pages    = "false"
     }
   }
+  environments = ["dev", "prod"]
+}
 
+module "repos" {
+  source = "./modules/dev-repos"
+  for_each = toset(local.environments)
+  repo_count = 2
+  env        = each.key
+  repos      = local.repos
 }
