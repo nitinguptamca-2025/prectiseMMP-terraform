@@ -7,13 +7,13 @@ variable "repo_count" {
     error_message = "The number of repositories must be less than 5."
   }
 }
-variable "environment" {
-  type        = string
+variable "env" {
+  type        = list(string)
   description = "deployment environment"
+  default     = ["dev"]
   validation {
-    condition = contains(["dev", "qa", "prod"], var.environment)
-    # condition     = var.environment == "dev" || var.environment == "qa" || var.environment == "prod"
-    error_message = "The variable must be one of 'dev', 'qa', or 'prod'."
+    condition     = length(var.env) > 0
+    error_message = "At least one environment must be specified."
   }
 }
 variable "repos" {
