@@ -10,3 +10,7 @@ output "clone-urls" {
   description = "repository Names and URL"
   sensitive   = false
 }
+output "repository_names" {
+  description = "Map of created repository names keyed by their map key"
+  value       = { for k, v in github_repository.mmp : k => v.name }
+}
