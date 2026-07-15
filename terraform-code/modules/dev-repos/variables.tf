@@ -1,7 +1,7 @@
 variable "repo_count" {
   type        = number
   description = "Number of repositories to create"
-  default     = 2
+  default     = 3
   validation {
     condition     = var.repo_count < 10
     error_message = "The number of repositories must be less than 5."

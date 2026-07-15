@@ -1,6 +1,6 @@
 resource "random_id" "random" {
-  byte_length = 2
-  count       = 2
+  byte_length = 3
+  count       = 3
 }
 
 resource "github_repository" "mmp" {
@@ -42,8 +42,8 @@ resource "github_repository_file" "readme" {
   commit_message      = "Add README.md"
   overwrite_on_create = true
 
-  content = templatefile("${path.module}/templates/readme.tftpl",{
-    env        = var.env, 
+  content = templatefile("${path.module}/templates/readme.tftpl", {
+    env        = var.env,
     language   = var.repos[each.key].language,
     repo_name  = github_repository.mmp[each.key].name,
     authorname = data.github_user.current.name,

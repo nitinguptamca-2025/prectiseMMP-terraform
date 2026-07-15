@@ -1,6 +1,6 @@
 repo_count = 2
 #varsource  = "terraform.tfvars"
-env = ["dev" , "prod"]
+env = ["dev", "staging", "prod"]
 repos = { "infra" = {
   language = "terraform"
   filename = "main.tf"

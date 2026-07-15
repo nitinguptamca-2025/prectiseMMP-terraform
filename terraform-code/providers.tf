@@ -1,14 +1,28 @@
+# terraform {
+#   required_providers {
+#     github = {
+#       source  = "integrations/github"
+#       version = "~> 6.0"
+#     }
+#   }
+# }
+# provider "github" {
+#   owner = "nitinguptamca-2025" # Replace with your GitHub username
+# }
+
 terraform {
   required_providers {
-    github = {
-      source  = "integrations/github"
-      version = "~> 6.0"
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.0" # or your desired version
     }
   }
 }
 
-# The provider block can remain empty if environment variables 
-# (GITHUB_TOKEN and GITHUB_OWNER) are set.
-provider "github" {
-  owner = "nitinguptamca-2025" # Replace with your GitHub username
+provider "docker" {
+  registry_auth {
+    address  = "registry.hub.docker.com"
+    username = "nitinguptamca"
+    password = "Gurukul700@#"
+  }
 }

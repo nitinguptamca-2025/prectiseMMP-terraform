@@ -1,3 +1,5 @@
+
+
 output "clone-urls" {
   value = {
     for i in github_repository.mmp : i.name => {
