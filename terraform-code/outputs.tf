@@ -1,11 +1,11 @@
 output "container-name" {
-  value = module.path-References-Interpolation.container-name
+  value = module.workspaces.container-name
 }
 
 output "ip-address" {
-  value = module.path-References-Interpolation.ip-address
+  value = module.workspaces.ip-address
 }
 
-output "container_count" {
-  value = module.path-References-Interpolation.container_count
-}
+# output "container_count" {
+#   value = module.referencing-Workspaces.
+# }
