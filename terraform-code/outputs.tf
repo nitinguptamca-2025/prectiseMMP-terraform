@@ -1,11 +1,11 @@
-output "container-name" {
-  value = module.map-Keys-And-Lookup-Defaults.container-name
-}
+# output "container-name" {
+#   value = module._02-Module-Variables.container-name
+# }
 
-output "ip-address" {
-  value = module.map-Keys-And-Lookup-Defaults.ip-address
-}
+# output "ip-address" {
+#   value = module._02-Module-Variables.ip-address
+# }
 
-# output "container_count" {
-#   value = module.referencing-Workspaces.
+# output "image_out" {
+#   value = module._02-Module-Variables.image_out
 # }
