@@ -72,13 +72,13 @@
 #   }
 # }
 
-module "workspaces" {
-  source = "./modules/workspaces"
-  ext_port = {
-    dev  = [1980, 1981]
-    prod = [1880, 1881]
-  }
-}
+# module "workspaces" {
+#   source = "./modules/workspaces"
+#   ext_port = {
+#     dev  = [1980, 1981]
+#     prod = [1880, 1881]
+#   }
+# }
 
 
 module "map-Keys-And-Lookup-Defaults" {
